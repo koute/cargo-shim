@@ -239,7 +239,12 @@ impl BuildConfig {
         let output_directory = self.output_directory( crate_root );
 
         let mut output = Vec::new();
-        for entry in output_directory.read_dir().unwrap() {
+        let output_directory_iter = match output_directory.read_dir() {
+            Ok( iter ) => iter,
+            Err( _ ) => return output
+        };
+
+        for entry in output_directory_iter {
             let entry = entry.unwrap();
             let filename = entry.file_name();
             let filename = filename.to_string_lossy().into_owned();
