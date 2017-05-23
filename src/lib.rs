@@ -211,7 +211,7 @@ impl BuildConfig {
         } if cfg!( target_os = "windows" ) {
             match self.build_target {
                 BuildTarget::Lib( _, Profile::Main ) => matcher!( "\\.(lib|dll)$" ),
-                _ => matcher!( "\\.exe$" )
+                _ => {}
             }
         } if cfg!( target_os = "linux" ) {
             match self.build_target {
