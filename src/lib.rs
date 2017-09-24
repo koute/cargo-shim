@@ -202,7 +202,7 @@ impl BuildConfig {
 
         macro_rules! prefix_matcher {
             ($prefix:expr) => {
-                matcher!( format!( "^{}-", $prefix ) )
+                matcher!( format!( "^{}-", $prefix.replace("-", "_") ) )
             }
         };
 
