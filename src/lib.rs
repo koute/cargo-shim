@@ -207,7 +207,13 @@ impl BuildConfig {
             }
         };
 
-        if self.triplet.as_ref().map( |value| value.as_str() ) == Some( "asmjs-unknown-emscripten" ) {
+        let is_web_target = self.triplet.as_ref().map( |triplet| {
+            let triplet = triplet.as_str();
+            triplet == "asmjs-unknown-emscripten" ||
+            triplet == "wasm32-unknown-emscripten"
+        }).unwrap_or( false );
+
+        if is_web_target {
             matcher!( "\\.js$" );
         } if cfg!( target_os = "windows" ) {
             match self.build_target {
