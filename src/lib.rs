@@ -66,8 +66,8 @@ impl CargoProject {
                     name: package.name,
                     crate_root: manifest_path.parent().unwrap().into(),
                     manifest_path: manifest_path,
-                    targets: package.targets.into_iter().map( |target| {
-                        CargoTarget {
+                    targets: package.targets.into_iter().filter_map( |target| {
+                        Some( CargoTarget {
                             name: target.name,
                             kind: match target.kind[ 0 ].as_str() {
                                 "lib" => TargetKind::Lib,
@@ -75,10 +75,11 @@ impl CargoProject {
                                 "example" => TargetKind::Example,
                                 "test" => TargetKind::Test,
                                 "bench" => TargetKind::Bench,
+                                "custom-build" => return None,
                                 _ => panic!( "Unknown target kind: '{}'", target.kind[ 0 ] )
                             },
                             source_directory: Into::< PathBuf >::into( target.src_path ).parent().unwrap().into()
-                        }
+                        })
                     }).collect()
                 }
             }).collect()
